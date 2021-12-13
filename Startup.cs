@@ -20,7 +20,9 @@ namespace SoapApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUsuarioService, UsuarioService>();
+            services.AddSingleton<IUsuarioService, Service>();
+            services.AddSingleton<IMusicService, Service>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +35,8 @@ namespace SoapApi
                 app.UseDeveloperExceptionPage();
             }
             
-            app.UseSoapEndpoint<IUsuarioService>($"/Service.asmx", new SoapEncoderOptions());
+            app.UseSoapEndpoint<IUsuarioService>($"/UserService.asmx", new SoapEncoderOptions());
+            app.UseSoapEndpoint<IMusicService>($"/MusicService.asmx", new SoapEncoderOptions());
 
 
             app.UseRouting();
