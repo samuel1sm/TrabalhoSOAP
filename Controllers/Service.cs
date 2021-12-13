@@ -215,7 +215,7 @@ namespace SoapApi.Controllers
                 string.Equals(a.Nome, nome, StringComparison.CurrentCultureIgnoreCase)
                 && string.Equals(a.Singer, singer, StringComparison.CurrentCultureIgnoreCase));
 
-            if (exists)
+            if (!exists)
             {
                 return "Não existe";
             }
