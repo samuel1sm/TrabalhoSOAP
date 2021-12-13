@@ -7,14 +7,13 @@ using SoapApi.Util;
 
 namespace SoapApi.Controllers
 {
-    public class Service : IUsuarioService, IMusicService
+    public class Service : IUsuarioService, IMusicService, IPlaylistService
     {
         private static List<Usuario> _users;
         private static List<Music> _musics;
 
         public Service()
         {
-
             _users = new List<Usuario>
             {
                 new(0, "samuel", 21),
@@ -35,15 +34,15 @@ namespace SoapApi.Controllers
             var playlist2 = new Playlist(1, "a2");
             var playlist3 = new Playlist(2, "b1");
             var playlist4 = new Playlist(3, "c1");
-            
+
             playlist1.addMusic(_musics[0]);
             playlist1.addMusic(_musics[1]);
-            
+
             playlist2.addMusic(_musics[2]);
             playlist2.addMusic(_musics[3]);
-            
+
             playlist3.addMusic(_musics[0]);
-            
+
             playlist4.addMusic(_musics[0]);
             playlist4.addMusic(_musics[3]);
 
@@ -51,7 +50,6 @@ namespace SoapApi.Controllers
             _users[0].PlayLists.Add(playlist2);
             _users[1].PlayLists.Add(playlist3);
             _users[2].PlayLists.Add(playlist4);
-
         }
 
         public List<Usuario> GetUsuarios()
@@ -106,19 +104,20 @@ namespace SoapApi.Controllers
             {
                 return "Musica não existe";
             }
-            
+
             var user = _users.Find(a => string.Equals(a.Nome, userName, StringComparison.CurrentCultureIgnoreCase));
             if (user == null)
             {
                 return "Usuario não existe";
             }
-            
-            var playList = user.PlayLists.Exists(a => string.Equals(a.Nome, playlistName, StringComparison.CurrentCultureIgnoreCase));
+
+            var playList = user.PlayLists.Exists(a =>
+                string.Equals(a.Nome, playlistName, StringComparison.CurrentCultureIgnoreCase));
             if (!playList)
             {
                 return "Playlist não existe";
             }
-            
+
             user.addMusicToPlaylist(playlistName, music);
 
             return "adicionado";
@@ -139,7 +138,7 @@ namespace SoapApi.Controllers
             }
 
             var id = user.PlayLists.Max(a => a.Id) + 1;
-            
+
             user.PlayLists.Add(new Playlist(id, playlistName));
             return "Criado";
         }
@@ -225,6 +224,21 @@ namespace SoapApi.Controllers
             _musics.Add(music);
 
             return "Removido";
+        }
+
+        public Message<List<Playlist>> FindPlaylistsWithSong(string nome, string singer)
+        {
+            var music = _musics.Find(a =>
+                string.Equals(a.Nome, nome, StringComparison.CurrentCultureIgnoreCase)
+                && string.Equals(a.Singer, singer, StringComparison.CurrentCultureIgnoreCase));
+
+            if (music == null)
+            {
+                return new Message<List<Playlist>>("Musica errada");
+            }
+
+            var result = _users.SelectMany(a => a.PlayLists.Where(b => b.Musics.Contains(music))).ToList();
+            return new Message<List<Playlist>>("Encontrados", result);
         }
     }
 }

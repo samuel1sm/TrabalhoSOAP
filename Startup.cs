@@ -22,6 +22,7 @@ namespace SoapApi
         {
             services.AddSingleton<IUsuarioService, Service>();
             services.AddSingleton<IMusicService, Service>();
+            services.AddSingleton<IPlaylistService, Service>();
 
         }
 
@@ -37,6 +38,7 @@ namespace SoapApi
             
             app.UseSoapEndpoint<IUsuarioService>($"/UserService.asmx", new SoapEncoderOptions());
             app.UseSoapEndpoint<IMusicService>($"/MusicService.asmx", new SoapEncoderOptions());
+            app.UseSoapEndpoint<IPlaylistService>($"/PlaylistService.asmx", new SoapEncoderOptions());
 
 
             app.UseRouting();

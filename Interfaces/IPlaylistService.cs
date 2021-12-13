@@ -8,16 +8,9 @@ namespace SoapApi.Interfaces
     [ServiceContract]
     public interface IPlaylistService
     {
-        [OperationContract]
-        List<Music> GetMusic();
 
         [OperationContract]
-        Message<Music> GetMusicByNameAndSinger(string nome,string singer);
-
-        [OperationContract]
-        public Message<Music> CreateMusic(string nome, string artista);
+        Message<List<Playlist>> FindPlaylistsWithSong(string nome,string singer);
         
-        [OperationContract]
-        public string DeleteMusic(string nome, string singer);
     }
 }
