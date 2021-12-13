@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SoapApi.Interfaces;
 using SoapApi.Models;
 using SoapApi.Util;
@@ -54,7 +55,7 @@ namespace SoapApi.Controllers
                 return new Message<Usuario>("usuario já existe");
             }
 
-            var user = new Usuario(_users.Count - 1, nome, idade);
+            var user = new Usuario(_users.Max(a => a.Id) +1, nome, idade);
             _users.Add(user);
 
             return new Message<Usuario>("Criado", user);
@@ -121,7 +122,7 @@ namespace SoapApi.Controllers
                 return "Não existe";
             }
 
-            var music = new Music(_musics.Count - 1, nome, singer);
+            var music = new Music(_musics.Max(a => a.Id) +1, nome, singer);
             _musics.Add(music);
 
             return "Removido";
