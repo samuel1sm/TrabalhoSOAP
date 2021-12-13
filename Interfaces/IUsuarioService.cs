@@ -20,5 +20,17 @@ namespace SoapApi.Interfaces
         [OperationContract]
         public string DeleteUser(string nome);
         
+        [OperationContract]
+        public string AddMusicToPlaylist(string userName ,string playlistName, string musicName, string singerName);
+
+        [OperationContract]
+        public string createPlaylist(string userName, string playlistName);
+        
+        [OperationContract]
+        public Message<List<Playlist>> getPlaylists(string userName);
+        
+        [OperationContract]
+        public Message<Playlist> getPlaylist(string userName, string playlistName);
+        
     }
 }

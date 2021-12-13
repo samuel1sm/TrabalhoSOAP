@@ -6,7 +6,7 @@ using SoapApi.Util;
 namespace SoapApi.Interfaces
 {
     [ServiceContract]
-    public interface IMusicService
+    public interface IPlaylistService
     {
         [OperationContract]
         List<Music> GetMusic();
@@ -15,10 +15,9 @@ namespace SoapApi.Interfaces
         Message<Music> GetMusicByNameAndSinger(string nome,string singer);
 
         [OperationContract]
-        public Message<Music> CreateMusic(string nome, string singer);
+        public Message<Music> CreateMusic(string nome, string artista);
         
         [OperationContract]
         public string DeleteMusic(string nome, string singer);
-        
     }
 }
